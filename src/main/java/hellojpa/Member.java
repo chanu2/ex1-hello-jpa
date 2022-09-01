@@ -3,18 +3,27 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+//@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ",     //매핑할 데이터베이스 시퀀스 이름
+//        initialValue = 1, allocationSize = 50)
 @Entity
-@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ",     //매핑할 데이터베이스 시퀀스 이름
-        initialValue = 1, allocationSize = 50)
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "MEMBER_SEQ_GENERATOR")
+
+    //연관 관계 맵핑 !!! 매우 중요
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name",nullable = false)
-    private String username;
+    @Column(name = "USERNAME")
+    private  String username;
+
+//    @Column(name = "TEAM_ID")  //객체지향 관점에서 별로다
+//    private Long teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -32,8 +41,45 @@ public class Member {
         this.username = username;
     }
 
-    public Member() {
+    public Team getTeam() {
+        return team;
     }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+}
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+//            generator = "MEMBER_SEQ_GENERATOR")
+//    private Long id;
+//
+//    @Column(name = "name",nullable = false)
+//    private String username;
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+//
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public Member() {
+//    }
+
+
+
+
 
     /*
     @Id
@@ -121,4 +167,3 @@ public class Member {
     //Getter, Setter…
 
      */
-}

@@ -103,6 +103,9 @@ public class JpaMain  {
 
              */
 
+
+
+            /*  // generatevalue 시퀀스에서 db에 계속 접근하지 않고 한번 가져올 때 50 개씩 가져오는 코드 test
             Member member1 = new Member();
             member1.setUsername("A");
 
@@ -123,6 +126,37 @@ public class JpaMain  {
             System.out.println("member3.getId() = " + member3.getId());
 
             System.out.println(" ===================== ");
+            */
+
+
+            //저장하는 코드
+
+            Team team = new Team();
+            team.setName("TEAMa");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+          //*  team.getMembers().add(member) 이 두개를 모두 써주는 걸 까먹을 수도 있다 그래서 연관관계 편의 메서드를 생성하면 편하다(Member로 이동)
+            em.persist(member);
+
+            team.addMember(member);
+
+            //team.getMembers().add(member);  // 양방향 연관 관계에서 양쪽에 다 세팅해줘야 한다. test 케이스등
+
+//            em.flush();
+//            em.clear();
+
+            Team findTeam = em.find(Team.class, team.getId());//1차 캐시
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("====================");
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+                
+            }
+            System.out.println("====================");
+
 
             tx.commit();
 
