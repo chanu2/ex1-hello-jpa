@@ -129,6 +129,9 @@ public class JpaMain  {
             */
 
 
+
+
+            /*
             //저장하는 코드
 
             Team team = new Team();
@@ -156,6 +159,30 @@ public class JpaMain  {
                 
             }
             System.out.println("====================");
+
+
+             */
+            Movie movie = new Movie();
+            movie.setDirector("마동석");
+            movie.setActor("우영우");
+            movie.setName("이상한변호사");
+            movie.setPrice(100000);
+
+            Book book = new Book();
+            book.setAuthor("베르나르베르베르");
+            book.setIsbn("wds");
+            book.setName("어린왕자");
+            book.setPrice(1000);
+
+            em.persist(movie);
+            em.persist(book);
+
+            em.flush();
+            em.clear();
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
+
 
 
             tx.commit();
