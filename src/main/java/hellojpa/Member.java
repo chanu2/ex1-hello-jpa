@@ -9,7 +9,7 @@ import java.util.List;
 //@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ",     //매핑할 데이터베이스 시퀀스 이름
 //        initialValue = 1, allocationSize = 50)
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
 
     //연관 관계 맵핑 !!! 매우 중요

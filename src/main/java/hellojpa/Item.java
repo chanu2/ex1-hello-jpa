@@ -4,9 +4,9 @@ package hellojpa;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)  //JOINED이거만 바꿔주면 된다
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  //JOINED이거만 바꿔주면 된다
 @DiscriminatorColumn
-public class Item {
+public abstract class Item {
 
     @Id @GeneratedValue
     private  Long id;

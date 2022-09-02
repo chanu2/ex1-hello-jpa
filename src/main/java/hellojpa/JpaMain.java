@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain  {
@@ -162,11 +163,19 @@ public class JpaMain  {
 
 
              */
+
+            Member member = new Member();
+            member.setUsername("user1");
+            member.setCreatedBy("kim");
+            member.setCreatedDate(LocalDateTime.now());
+
+
             Movie movie = new Movie();
             movie.setDirector("마동석");
             movie.setActor("우영우");
             movie.setName("이상한변호사");
             movie.setPrice(100000);
+
 
             Book book = new Book();
             book.setAuthor("베르나르베르베르");
@@ -174,14 +183,26 @@ public class JpaMain  {
             book.setName("어린왕자");
             book.setPrice(1000);
 
+            Album album = new Album();
+            album.setArtist("송민호");
+            album.setName("가시나");
+            album.setPrice(10000);
+
+
+            em.persist(member);
             em.persist(movie);
             em.persist(book);
+            em.persist(album);
 
             em.flush();
             em.clear();
 
             Movie findMovie = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = " + findMovie);
+            Book findBook = em.find(Book.class, book.getId());
+            Album findAlbum = em.find(Album.class, album.getId());
+            System.out.println("findMovie = " + findMovie.getName());
+            System.out.println("findBook = " + findBook.getName());
+            System.out.println("album = " + album.getName());
 
 
 
