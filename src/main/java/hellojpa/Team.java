@@ -11,9 +11,8 @@ public class Team extends BaseEntity {
     private Long id;
     private String name;
 
-    @ManyToOne  // Member에 Team team에 걸려있다
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    @OneToMany(mappedBy = "team")  // Member에 Team team에 걸려있다
+    private List<Member> members = new ArrayList<>();
 
 
 

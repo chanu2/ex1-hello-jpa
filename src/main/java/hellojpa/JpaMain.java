@@ -164,6 +164,8 @@ public class JpaMain  {
 
              */
 
+
+            /* 조인 테이블 , 싱글 테이블 , TABLE_PER_클래스, MappedSuperclass
             Member member = new Member();
             member.setUsername("user1");
             member.setCreatedBy("kim");
@@ -203,6 +205,26 @@ public class JpaMain  {
             System.out.println("findMovie = " + findMovie.getName());
             System.out.println("findBook = " + findBook.getName());
             System.out.println("album = " + album.getName());
+
+             */
+
+
+            Member member = new Member();
+            member.setUsername("chanwoo");
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+// 멤버만 찾기를 원하는데 team 쿼리도 jpa가 조인해서 보냈다
+//            Member findMember = em.find(Member.class, member.getId());
+
+
+            Member findMember = em.getReference(Member.class, member.getId());
+            System.out.println("findMember.Id = " + findMember.getId());
+            System.out.println("findMember.name = " + findMember.getUsername());
+            System.out.println("findMember.name = " + findMember.getUsername());
 
 
 

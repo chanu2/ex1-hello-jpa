@@ -23,12 +23,9 @@ public class Member extends BaseEntity {
 //    @Column(name = "TEAM_ID")  //객체지향 관점에서 별로다
 //    private Long teamId;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
-
-    @OneToMany(mappedBy = "member")
-    private List<Team> teams = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)  //team을 프록시 객체로 조회한다 // member클래스만 db에서 조회한다
+    @JoinColumn(name = "ITEM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -46,8 +43,13 @@ public class Member extends BaseEntity {
         this.username = username;
     }
 
+    public Team getTeam() {
+        return team;
+    }
 
-
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE,
