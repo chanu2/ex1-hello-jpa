@@ -209,6 +209,8 @@ public class JpaMain  {
              */
 
 
+            /*
+
             Member member = new Member();
             member.setUsername("chanwoo");
 
@@ -221,10 +223,100 @@ public class JpaMain  {
 //            Member findMember = em.find(Member.class, member.getId());
 
 
-            Member findMember = em.getReference(Member.class, member.getId());
+            Member findMember = em.getReference(Member.class, member.getId());   //getrRegerence 사용법 프록시 기본
             System.out.println("findMember.Id = " + findMember.getId());
             System.out.println("findMember.name = " + findMember.getUsername());
             System.out.println("findMember.name = " + findMember.getUsername());
+
+
+             */
+
+
+            /* lazy ,eager
+            Team team = new Team();
+            team.setName("레알마드리드");
+            em.persist(team);
+
+            Team team2 = new Team();
+            team.setName("바르셀로나");
+            em.persist(team2);
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(team);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setTeam(team2);
+            em.persist(member2);
+
+
+            em.flush();
+            em.clear();
+
+            //Member m = em.find(Member.class, member1.getId());
+
+            List<Member> members = em.createQuery("select m from Member m", Member.class)   // 만약에 지연로딩이 아닐 때 한번에 가져올때 jpql로 작성했을 때 쿼리가 2번나가는 현상
+                    .getResultList();
+
+//            System.out.println("m = " + m.getTeam().getClass());
+//
+//            System.out.println(" ============================ ");
+//            m.getTeam().getName();   // team에 어떤 속성을 사용하는 시점에 프록시 객체가 초기화 되면서 db에서 값을 가져온다
+//            System.out.println(" ============================ ");
+
+             */
+
+
+            /*
+            //cascade = CascadeType.ALL,orphanRemoval = true 로 parent를 이용하여 child를 영속시키고 삭제할 수 있다  parent가 child의 생명 주기를 관리한다
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+//            em.persist(child1);
+//            em.persist(child2);
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
+
+             */
+
+            /* 객체의 참조하면 변수 값이 완전히 바뀌어 버린다.
+            Address address = new Address("city","street","10000");
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setHomeAddress(address);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(address);
+            em.persist(member2);
+
+            //member1의 주소만 바꾸고 싶어서 했는데...,,  값타입의 실제 인스터스를 공휴하는 것은 위험하다
+            member1.getHomeAddress().setCity("newCity");
+
+             */
+
+            Address address = new Address("city","street","10000");
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setHomeAddress(address);
+            em.persist(member1);
+
+            Address newAddress = new Address(("NewCity"),address.getStreet(),address.getZipcode());
+            member1.setHomeAddress(newAddress);
+
 
 
 
@@ -232,6 +324,7 @@ public class JpaMain  {
 
         }catch (Exception e){
             tx.rollback();
+            e.printStackTrace();
         }finally {
             em.close(); // 꼭 닫아야 한다
         }

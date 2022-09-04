@@ -9,7 +9,7 @@ import java.util.List;
 //@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ",     //매핑할 데이터베이스 시퀀스 이름
 //        initialValue = 1, allocationSize = 50)
 @Entity
-public class Member extends BaseEntity {
+public class Member {
 
 
     //연관 관계 맵핑 !!! 매우 중요
@@ -20,12 +20,22 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private  String username;
 
-//    @Column(name = "TEAM_ID")  //객체지향 관점에서 별로다
-//    private Long teamId;
-
-    @ManyToOne(fetch = FetchType.LAZY)  //team을 프록시 객체로 조회한다 // member클래스만 db에서 조회한다
-    @JoinColumn(name = "ITEM_ID")
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @Embedded
+    private Period workPeriod;
+
+    @Embedded
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({@AttributeOverride(name = "city",column = @Column(name = "WORK_CITY")),
+            @AttributeOverride(name = "street",column = @Column(name = "WORK_STREET")),
+            @AttributeOverride(name = "zipcode",column = @Column(name = "WORK_ZIPCODE"))
+    })
+    private Address workAddress;
 
     public Long getId() {
         return id;
@@ -50,6 +60,30 @@ public class Member extends BaseEntity {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    /* //
+    @ManyToOne(fetch = FetchType.LAZY)  //team을 프록시 객체로 조회한다 // member클래스만 db에서 조회한다  //지연로딩과 즉시 로딩
+    @JoinColumn(name = "ITEM_ID")
+    private Team team;
+     */
+
+
 }
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE,
