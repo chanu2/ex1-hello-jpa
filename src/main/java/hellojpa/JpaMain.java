@@ -6,6 +6,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain  {
 
@@ -307,6 +308,9 @@ public class JpaMain  {
 
              */
 
+
+            /*
+            //
             Address address = new Address("city","street","10000");
 
             Member member1 = new Member();
@@ -317,8 +321,55 @@ public class JpaMain  {
             Address newAddress = new Address(("NewCity"),address.getStreet(),address.getZipcode());
             member1.setHomeAddress(newAddress);
 
+             */
 
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("homeCity1","street", "10000"));
 
+            member.getFavoritFoods().add("치킨");
+            member.getFavoritFoods().add("베이컨");
+            member.getFavoritFoods().add("피자");
+
+            member.getAddressHistory().add(new AddressEntity("old1","street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2","street", "10000"));
+
+             em.persist(member);
+
+             em.flush();
+             em.clear();
+
+            System.out.println(" ============start================= ");
+            Member findMember = em.find(Member.class, member.getId());
+
+            /* 값타임 조회
+            List<Address> addressHistory = findMember.getAddressHistory();
+            for (Address address : addressHistory) {
+                System.out.println("address= " + address.getCity());
+            }
+
+            Set<String> favoritFoods = findMember.getFavoritFoods();
+            for (String favoritFood : favoritFoods) {
+                System.out.println("favoritFood = " + favoritFood);
+            }
+
+             */
+
+            //homeCity --> newCity 로 이사
+            //findMember.getHomeAddress().setCity("newCity");  값 타입을 이런식으로 바꾸면 안된다
+
+            //Address a = findMember.getHomeAddress();   // 인스턴스를 새로 만들어서 갈아 끼워야한다
+            //findMember.setHomeAddress(new Address("newCity",a.getStreet(),a.getZipcode()));
+
+            // 컬렉션 변경 치킨 --> 한식
+           // findMember.getFavoritFoods().remove("치킨");
+            //findMember.getFavoritFoods().add("한식");
+
+            System.out.println(" ============start================= ");
+
+            //값타입 컬렉션 주소 바꾸기 완전히 갈아 끼워야함
+            //findMember.getAddressHistory().remove(new Address("old1","street", "10000"));  // 이퀄스랑 해쉬코드를 잘 구현 했다면 이퀄스 기반으로 찾아서 동작한다
+            //findMember.getAddressHistory().add(new Address("newCIty1","street", "10000"));
 
             tx.commit();
 

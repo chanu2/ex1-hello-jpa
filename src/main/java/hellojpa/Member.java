@@ -1,10 +1,9 @@
 package hellojpa;
 import javax.persistence.*;
+import javax.print.attribute.standard.MediaSize;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 //@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "MEMBER_SEQ",     //매핑할 데이터베이스 시퀀스 이름
 //        initialValue = 1, allocationSize = 50)
@@ -20,7 +19,9 @@ public class Member {
     @Column(name = "USERNAME")
     private  String username;
 
-    @ManyToOne
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
@@ -29,6 +30,22 @@ public class Member {
 
     @Embedded
     private Address homeAddress;
+    @ElementCollection  // 값타입 컬렉션은 적어줘야 한다
+    @CollectionTable(name = "FAVORITE_FOODS" ,joinColumns =
+    @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME") //  얘외 적으로 STRING은 값이 하나고 내가 정의한 것이 아니기 때문에
+    private Set<String> favoritFoods =new HashSet<>();
+
+
+//    @ElementCollection  값 타입으로 매핑
+//    @CollectionTable(name = "ADDRESS ",joinColumns = @JoinColumn(name = "MEMBER_ID"))
+//    private List<Address> addressHistory = new ArrayList<>();
+
+    // 엔티티로 맵핑
+    @OneToMany(cascade = CascadeType.ALL ,orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
+
 
     @Embedded
     @AttributeOverrides({@AttributeOverride(name = "city",column = @Column(name = "WORK_CITY")),
@@ -75,6 +92,30 @@ public class Member {
 
     public void setHomeAddress(Address homeAddress) {
         this.homeAddress = homeAddress;
+    }
+
+    public Set<String> getFavoritFoods() {
+        return favoritFoods;
+    }
+
+    public void setFavoritFoods(Set<String> favoritFoods) {
+        this.favoritFoods = favoritFoods;
+    }
+
+    public List<AddressEntity> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<AddressEntity> addressHistory) {
+        this.addressHistory = addressHistory;
+    }
+
+    public Address getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(Address workAddress) {
+        this.workAddress = workAddress;
     }
 
     /* //
