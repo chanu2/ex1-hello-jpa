@@ -366,6 +366,7 @@ public class JpaMain  {
             //findMember.getFavoritFoods().add("한식");
 
             System.out.println(" ============start================= ");
+            System.out.println("member = " + member);
 
             //값타입 컬렉션 주소 바꾸기 완전히 갈아 끼워야함
             //findMember.getAddressHistory().remove(new Address("old1","street", "10000"));  // 이퀄스랑 해쉬코드를 잘 구현 했다면 이퀄스 기반으로 찾아서 동작한다
