@@ -341,6 +341,7 @@ public class JpaMain  {
 
             System.out.println(" ============start================= ");
             Member findMember = em.find(Member.class, member.getId());
+            System.out.println("findMember = " + findMember);
 
             /* 값타임 조회
             List<Address> addressHistory = findMember.getAddressHistory();
